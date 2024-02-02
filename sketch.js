@@ -29,6 +29,10 @@ var plat1, plat2, plat3, plat4, plat5, activator1, checkpoint1;
 var player;
 
 var AABubble1 = false;
+var AABubble2 = false;
+var AABubble3 = false;
+var AABubble4 = false;
+var AABubble5 = false;
 
 function preload() {
     background = loadImage("background.png");
@@ -71,6 +75,11 @@ function setup() {
     plat10 = new Ground(1650, -1100, 60, 60);
     plat11 = new Ground(1850, -1200, 60, 60);
     plat12 = new ABubble(1990, -1200, 60);
+    plat13 = new ABubble(2300, -1300, 60);
+    plat14 = new ABubble(2600, -1420, 60);
+    plat15 = new KBubble(2770, -1550, 60);
+    plat16 = new ABubble(2500, -1700, 60);
+    plat17 = new Ground(2300, -1750, 60, 60);
 
     //last save
     checkpointing();
@@ -127,6 +136,11 @@ function draw() {
     plat10.show(stonebricks);
     plat11.show(stonebricks);
     plat12.show(AABubble1);
+    plat13.show(AABubble2);
+    plat14.show(AABubble3);
+    plat15.show(AABubble4);
+    plat16.show(AABubble5);
+    plat17.show(stonebricks);
 
     //camera
     camera.x = slime.body.position.x;
@@ -211,6 +225,40 @@ function draw() {
         AABubble1 = true;
         Matter.Body.setVelocity(slime.body, { x: 0, y: -15 });
     }
+    var touchbubble2 = Matter.SAT.collides(
+        slime.body,
+        plat13.body
+    );
+    if (touchbubble2.collided) {
+        AABubble2 = true;
+        Matter.Body.setVelocity(slime.body, { x: 0, y: -15 });
+    }
+    var touchbubble3 = Matter.SAT.collides(
+        slime.body,
+        plat14.body
+    );
+    if (touchbubble3.collided) {
+        AABubble3 = true;
+        Matter.Body.setVelocity(slime.body, { x: 0, y: -15 });
+    }
+    var touchbubble4 = Matter.SAT.collides(
+        slime.body,
+        plat15.body
+    );
+    if (touchbubble4.collided) {
+        AABubble4 = true;
+        setTimeout(()=>{
+            die("magma");
+        },300)
+    }
+    var touchbubble5 = Matter.SAT.collides(
+        slime.body,
+        plat16.body
+    );
+    if (touchbubble5.collided) {
+        AABubble5 = true;
+        Matter.Body.setVelocity(slime.body, { x: 0, y: -15 });
+    }
     //counting 
     document.getElementById("PlayTime").innerHTML = "Time Played: " + count();
 }
@@ -236,6 +284,12 @@ function die(type) {
         console.log("Died by Magma");
     }
     respawndelay = 100;
+
+    //reseting things
+    AABubble1 = false;
+    AABubble2 = false;
+    AABubble3 = false;
+    AABubble4 = false;
 }
 
 function restart() {
