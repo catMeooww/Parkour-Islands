@@ -80,6 +80,10 @@ function setup() {
     plat15 = new KBubble(2770, -1550, 60);
     plat16 = new ABubble(2500, -1700, 60);
     plat17 = new Ground(2300, -1750, 60, 60);
+    plat18 = new Ground(2000, -1800, 60, 60);
+    plat19 = new Ground(1700, -1900, 60, 60);
+    plat20 = new Ground(2800, -1800, 60, 60);
+    plat21 = new Ground(3000, -1900, 60, 60);
 
     //last save
     checkpointing();
@@ -96,6 +100,14 @@ function checkpointing() {
     } else {
         Matter.Body.setPosition(slime.body, { x: 300, y: 400 });
     }
+}
+
+function checkpointActive(n){
+    localStorage.setItem("checkpoint", n);
+    document.getElementById("PlayTime").style.color = "greenyellow";
+    setTimeout(() =>{
+        document.getElementById("PlayTime").style.color = "white";
+    },1000);
 }
 
 function draw() {
@@ -141,6 +153,10 @@ function draw() {
     plat15.show(AABubble4);
     plat16.show(AABubble5);
     plat17.show(stonebricks);
+    plat18.show(stonebricks);
+    plat19.show(stonebricks);
+    plat20.show(stonebricks);
+    plat21.show(stonebricks);
 
     //camera
     camera.x = slime.body.position.x;
@@ -187,14 +203,14 @@ function draw() {
         checkpoint1.body
     );
     if (savepoint1.collided) {
-        localStorage.setItem("checkpoint", 1);
+        checkpointActive(1);
     }
     var savepoint2 = Matter.SAT.collides(
         slime.body,
         checkpoint2.body
     );
     if (savepoint2.collided) {
-        localStorage.setItem("checkpoint", 2);
+        checkpointActive(2);
     }
 
     var climbstair1 = Matter.SAT.collides(
@@ -260,7 +276,7 @@ function draw() {
         Matter.Body.setVelocity(slime.body, { x: 0, y: -15 });
     }
     //counting 
-    document.getElementById("PlayTime").innerHTML = "Time Played: " + count();
+    document.getElementById("PlayTime").innerHTML = "Checkpoint: "+ localStorage.getItem("checkpoint") + "<br>Time Played: " + count();
 }
 function jumping() {
     console.log("jump")
@@ -290,6 +306,7 @@ function die(type) {
     AABubble2 = false;
     AABubble3 = false;
     AABubble4 = false;
+    AABubble5 = false;
 }
 
 function restart() {
