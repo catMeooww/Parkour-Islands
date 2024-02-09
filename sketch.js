@@ -33,6 +33,7 @@ var AABubble2 = false;
 var AABubble3 = false;
 var AABubble4 = false;
 var AABubble5 = false;
+var AABubble6 = false;
 
 function preload() {
     background = loadImage("background.png");
@@ -84,6 +85,11 @@ function setup() {
     plat19 = new Ground(1700, -1900, 60, 60);
     plat20 = new Ground(2800, -1800, 60, 60);
     plat21 = new Ground(3000, -1900, 60, 60);
+    plat22 = new ABubble(3200, -2000, 60);
+    plat23 = new Ground(3500, -2100, 60, 60);
+    stair3 = new Stair(3550, -2200, 10);
+    plat24 = new Ground(3700, -2300, 300, 60);
+    checkpoint3 = new Activator(3710, -2330);
 
     //last save
     checkpointing();
@@ -96,6 +102,8 @@ function checkpointing() {
             Matter.Body.setPosition(slime.body, { x: 660, y: -200 });
         }else if(checkpoint == 2){
             Matter.Body.setPosition(slime.body, { x: 690, y: -1100 });
+        }else if(checkpoint == 3){
+            Matter.Body.setPosition(slime.body, { x: 3710, y: -2430 });
         }
     } else {
         Matter.Body.setPosition(slime.body, { x: 300, y: 400 });
@@ -157,6 +165,12 @@ function draw() {
     plat19.show(stonebricks);
     plat20.show(stonebricks);
     plat21.show(stonebricks);
+    plat22.show(AABubble6);
+    plat23.show(stonebricks);
+    stair3.show();
+    plat24.show(stonebricks);
+    text("Checkpoint", 3700, -2350);
+    checkpoint3.show("lime");
 
     //camera
     camera.x = slime.body.position.x;
@@ -212,6 +226,13 @@ function draw() {
     if (savepoint2.collided) {
         checkpointActive(2);
     }
+    var savepoint3 = Matter.SAT.collides(
+        slime.body,
+        checkpoint3.body
+    );
+    if (savepoint3.collided) {
+        checkpointActive(3);
+    }
 
     var climbstair1 = Matter.SAT.collides(
         slime.body,
@@ -221,7 +242,11 @@ function draw() {
         slime.body,
         stair2.body
     );
-    if (climbstair1.collided || climbstair2.collided) {
+    var climbstair3 = Matter.SAT.collides(
+        slime.body,
+        stair3.body
+    );
+    if (climbstair1.collided || climbstair2.collided || climbstair3.collided) {
         Matter.Body.setVelocity(slime.body, { x: 0, y: -1 });
     }
 
@@ -275,6 +300,14 @@ function draw() {
         AABubble5 = true;
         Matter.Body.setVelocity(slime.body, { x: 0, y: -15 });
     }
+    var touchbubble6 = Matter.SAT.collides(
+        slime.body,
+        plat22.body
+    );
+    if (touchbubble6.collided) {
+        AABubble6 = true;
+        Matter.Body.setVelocity(slime.body, { x: 0, y: -15 });
+    }
     //counting 
     document.getElementById("PlayTime").innerHTML = "Checkpoint: "+ localStorage.getItem("checkpoint") + "<br>Time Played: " + count();
 }
@@ -307,6 +340,7 @@ function die(type) {
     AABubble3 = false;
     AABubble4 = false;
     AABubble5 = false;
+    AABubble6 = false;
 }
 
 function restart() {
